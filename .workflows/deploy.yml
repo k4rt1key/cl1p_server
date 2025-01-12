@@ -4,13 +4,11 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'server/**' 
+
   pull_request:
     branches:
       - main
-    paths:
-      - 'server/**' 
+
 
 jobs:
   build-and-deploy:
@@ -69,7 +67,8 @@ jobs:
               -e AWS_S3_BUCKET_NAME="${{ secrets.AWS_S3_BUCKET_NAME }}" \
               -e PORT="${{ secrets.PORT }}" \
               -e MONGO_URI="${{ secrets.MONGO_URI }}" \
-              -p 6000:6000 \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              -p 5000:5000 \
               --name cl1p-server \
               ${{ secrets.DOCKER_USERNAME }}/cl1p-server:latest
 
