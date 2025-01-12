@@ -2,8 +2,8 @@ const s3 = require("../config/aws");
 const bucketName = process.env.AWS_BUCKET_NAME;
 
 const getPresignedUploadUrl = async (key, contentType) => {
-  if(!key || !contentType){
-    throw new Error("Key and contentType are required");
+  if(!key || !contentType || !bucketName){
+    throw new Error("Key, Bucket name and contentType are required");
   }
 
   const params = {
@@ -25,10 +25,10 @@ const getPresignedUploadUrl = async (key, contentType) => {
 const getPresignedDownloadUrl = async (key) => {
   try{
 
-    if(!key){
+    if(!key || !bucketName){
       throw new Error("Key is required");
     }
-    
+
     const params = {
       Bucket: bucketName,
       Key: key,
