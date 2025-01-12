@@ -10,7 +10,8 @@ const app = express();
 
 app.use(
     cors({
-      origin: 'http://localhost:3000', // Allow requests from this origin
+      // origin: 'http://localhost:3000', 
+      origin: ['http://localhost:3000', 'https://api.cl1p.in'], // Allow these origins
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these HTTP methods
       allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
       credentials: true, // Allow cookies or credentials
