@@ -171,10 +171,12 @@ exports.createCl1p = async (req, res) => {
     const newCl1p = new Cl1p({
       name,
       text: text || "",
-      files,
+      files: files.map(file => ({ fileName: file.fileName.toString(), contentType: file.contentType })),
       password: hashedPassword,
       expiry: expiryDate
     });
+
+    console.log(files[0].fileName.toString());
 
     await newCl1p.save();
 
@@ -216,7 +218,7 @@ exports.getPresignedUrls = async (req, res) => {
     const urls = await Promise.all(
       files.map(async (file) => {
         try {
-          return await getPresignedUploadUrl(file.fileName, file.contentType);
+          return await getPresignedUploadUrl(file.fileName.toString(), file.contentType);
         } catch (error) {
           throw new Error (`Error generating presigned URL for ${file.fileName}: ${error}`);
         }

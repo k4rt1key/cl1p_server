@@ -13,10 +13,10 @@ const getPresignedUploadUrl = async (key, contentType) => {
   if (typeof contentType !== "string" || !contentType.trim()) {
     throw new Error("Invalid content type. ContentType must be a non-empty string.");
   }
-  
+
   const params = {
     Bucket: bucketName,
-    Key: key,
+    Key: key.toString(),
     Expires: 3600,  
     ContentType: contentType,  
   };
@@ -40,12 +40,14 @@ const getPresignedDownloadUrl = async (key) => {
     if (typeof key !== "string" || !key.trim()) {
       throw new Error("Invalid file name. Key must be a non-empty string.");
     }
-  
+    
+    console.log(key.toString());
     const params = {
       Bucket: bucketName,
       Key: key.toString(),
       Expires: 3600,
     };
+
     return s3.getSignedUrlPromise("getObject", params);
   } catch(error){
     console.error("Error generating pre-signed URL", error.message);
