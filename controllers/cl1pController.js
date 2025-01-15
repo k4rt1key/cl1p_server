@@ -6,8 +6,6 @@ const { getPresignedUploadUrl, getPresignedDownloadUrl } = require("../utils/fil
 const MAX_TEXT_LENGTH = 1000000; // 1MB
 const MAX_FILES = 10;
 const MAX_FILENAME_LENGTH = 255;
-const MIN_EXPIRY_HOURS = 1;
-const MAX_EXPIRY_HOURS = 720; // 30 days
 
 
 /**
@@ -34,17 +32,6 @@ const validateFiles = (files) => {
     }
     
   });
-};
-
-/**
- * Validates expiry time
- * @param {number} expiry - Expiry time in hours
- * @throws {Error} If validation fails
- */
-const validateExpiry = (expiry) => {
-  if (!Number.isInteger(expiry) || expiry < MIN_EXPIRY_HOURS || expiry > MAX_EXPIRY_HOURS) {
-    throw new Error(`Expiry must be between ${MIN_EXPIRY_HOURS} and ${MAX_EXPIRY_HOURS} hours`);
-  }
 };
 
 exports.searchCl1p = async (req, res) => {
@@ -128,7 +115,6 @@ exports.searchCl1p = async (req, res) => {
 
 exports.createCl1p = async (req, res) => {
   const { name, text, files = [], password, expiry } = req.body;
-
   try {
     // Input validation
     if (!name || typeof name !== 'string' || name.length < 1) {
@@ -153,7 +139,6 @@ exports.createCl1p = async (req, res) => {
     }
 
     validateFiles(files);
-    // validateExpiry(expiry);
 
     // Check for existing cl1p
     const existingCl1p = await Cl1p.findOne({ name });
