@@ -6,6 +6,14 @@ const getPresignedUploadUrl = async (key, contentType) => {
     throw new Error("Key, Bucket name and contentType are required");
   }
 
+  if (typeof key !== "string" || !key.trim()) {
+    throw new Error("Invalid file name. Key must be a non-empty string.");
+  }
+
+  if (typeof contentType !== "string" || !contentType.trim()) {
+    throw new Error("Invalid content type. ContentType must be a non-empty string.");
+  }
+  
   const params = {
     Bucket: bucketName,
     Key: key,
@@ -29,6 +37,10 @@ const getPresignedDownloadUrl = async (key) => {
       throw new Error("Key is required");
     }
 
+    if (typeof key !== "string" || !key.trim()) {
+      throw new Error("Invalid file name. Key must be a non-empty string.");
+    }
+  
     const params = {
       Bucket: bucketName,
       Key: key.toString(),

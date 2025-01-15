@@ -100,7 +100,7 @@ exports.searchCl1p = async (req, res) => {
           if(file.fileName === undefined || file.fileName === null || file.fileName === "") {
             return null;
           }
-          return await getPresignedDownloadUrl(file.fileName);
+          return await getPresignedDownloadUrl(file.fileName.toString());
         } catch (error) {
           throw new Error(`Error generating presigned URL for ${file.fileName}: ${error}`)
         }
