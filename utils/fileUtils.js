@@ -31,7 +31,7 @@ const getPresignedDownloadUrl = async (key) => {
 
     const params = {
       Bucket: bucketName,
-      Key: key,
+      Key: key.toString(),
       Expires: 3600,
     };
     return s3.getSignedUrlPromise("getObject", params);

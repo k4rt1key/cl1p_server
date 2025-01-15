@@ -97,6 +97,9 @@ exports.searchCl1p = async (req, res) => {
     const filePreviews = await Promise.all(
       (cl1p.files || []).map(async (file) => {
         try {
+          if(file.fileName === undefined || file.fileName === null || file.fileName === "") {
+            return null;
+          }
           return await getPresignedDownloadUrl(file.fileName);
         } catch (error) {
           throw new Error(`Error generating presigned URL for ${file.fileName}: ${error}`)
