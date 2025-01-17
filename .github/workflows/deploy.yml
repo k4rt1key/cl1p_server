@@ -50,7 +50,7 @@ jobs:
             # Stop any existing container with the same name
             sudo docker stop cl1p-server || true
             sudo docker rm cl1p-server || true
-            sudo docker image prune -f
+     
 
             # Pull the new Docker image
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cl1p-server:latest
