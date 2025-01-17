@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["npx","nodemon", "app.js"]
+CMD ["pm2","start", "app.js"]
