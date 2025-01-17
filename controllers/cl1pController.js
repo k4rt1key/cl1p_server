@@ -142,7 +142,7 @@ exports.createCl1p = async (req, res) => {
       });
     }
 
-    validateFiles(files);
+    validateFiles(files?.length > 0 ? files : []);
 
     // Check for existing cl1p
     const existingCl1p = await Cl1p.findOne({ name });
@@ -160,12 +160,10 @@ exports.createCl1p = async (req, res) => {
     const newCl1p = new Cl1p({
       name,
       text: text || "",
-      files: files ? files.map(file => ({ fileName: file.fileName.toString(), contentType: file.contentType })) : [],
+      files: files?.length > 0 ? files.map(file => ({ fileName: file.fileName.toString(), contentType: file.contentType })) : [],
       password: hashedPassword,
       expiry: expiryDate
     });
-
-    console.log(files[0].fileName.toString());
 
     await newCl1p.save();
 
