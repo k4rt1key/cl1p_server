@@ -14,29 +14,33 @@ const MAX_FILENAME_LENGTH = 255;
  * @throws {Error} If validation fails
  */
 const validateFiles = (files) => {
-  if (!Array.isArray(files)) {
-    throw new Error("Files must be an array");
-  }
-  
-  if (files.length > MAX_FILES) {
-    throw new Error(`Maximum ${MAX_FILES} files allowed`);
-  }
+  try {
 
-  files.forEach(file => {
-    if (!file.fileName || !file.contentType) {
-      throw new Error("Each file must have fileName and contentType");
+    if (!Array.isArray(files)) {
+      throw new Error("Files must be an array");
     }
-    
-    if (file.fileName.length > MAX_FILENAME_LENGTH) {
-      throw new Error(`Filename cannot exceed ${MAX_FILENAME_LENGTH} characters`);
+
+    if (files.length > MAX_FILES) {
+      throw new Error(`Maximum ${MAX_FILES} files allowed`);
     }
-    
-  });
+
+    files.forEach(file => {
+      if (!file.fileName || !file.contentType) {
+        throw new Error("Each file must have fileName and contentType");
+      }
+
+      if (file.fileName.length > MAX_FILENAME_LENGTH) {
+        throw new Error(`Filename cannot exceed ${MAX_FILENAME_LENGTH} characters`);
+      }
+
+    });
+  } catch (err) {
+    throw new Error(`Validation error: ${err.message}`);
+  }
 };
 
 exports.searchCl1p = async (req, res) => {
   const { name, password } = req.body;
-  console.log(`Name : ${name}`)
   if (!name || typeof name !== 'string') {
     return res.status(400).json({
       status: "error",
@@ -47,9 +51,9 @@ exports.searchCl1p = async (req, res) => {
   try {
     const cl1p = await Cl1p.findOne({ name }).select("+password");
     if (!cl1p) {
-      return res.status(404).json({ 
-        status: "error", 
-        message: "Cl1p not found" 
+      return res.status(404).json({
+        status: "error",
+        message: "Cl1p not found"
       });
     }
 
@@ -84,7 +88,7 @@ exports.searchCl1p = async (req, res) => {
     const filePreviews = await Promise.all(
       (cl1p.files || []).map(async (file) => {
         try {
-          if(file.fileName === undefined || file.fileName === null || file.fileName === "") {
+          if (file.fileName === undefined || file.fileName === null || file.fileName === "") {
             return null;
           }
           return await getPresignedDownloadUrl(file.fileName.toString());
@@ -177,7 +181,7 @@ exports.createCl1p = async (req, res) => {
         details: Object.values(err.errors).map(e => e.message)
       });
     }
-    
+
     console.error("Error creating cl1p:", err);
     res.status(500).json({
       status: "error",
@@ -205,7 +209,7 @@ exports.getPresignedUrls = async (req, res) => {
         try {
           return await getPresignedUploadUrl(file.fileName.toString(), file.contentType);
         } catch (error) {
-          throw new Error (`Error generating presigned URL for ${file.fileName}: ${error}`);
+          throw new Error(`Error generating presigned URL for ${file.fileName}: ${error}`);
         }
       })
     ).then(urls => urls.filter(url => url !== null));
@@ -229,8 +233,7 @@ exports.getPresignedUrls = async (req, res) => {
         message: err.message
       });
     }
-    
-    console.error("Error generating pre-signed URLs:", err);
+
     res.status(500).json({
       status: "error",
       message: "Server error",

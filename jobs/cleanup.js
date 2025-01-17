@@ -13,7 +13,7 @@ schedule.scheduleJob("0 * * * *", async () => { // Runs every hour
         continue;
       }
       
-      await s3.deleteObject({ Bucket: bucketName, Key: file }).promise();
+      await s3.deleteObject({ Bucket: bucketName, Key: file.fileName }).promise();
     }
     await Cl1p.deleteOne({ _id: cl1p._id });
   }

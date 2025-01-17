@@ -8,6 +8,7 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install --silent
 
+
 # Copy the rest of the application
 COPY . .
 
@@ -15,4 +16,4 @@ COPY . .
 EXPOSE 5000
 
 # Use npx to run pm2 without global install
-CMD ["npx", "pm2", "start", "app.js"]
+CMD ["npx", "nodemon", "app.js"]
