@@ -20,11 +20,11 @@ const validateFiles = (files) => {
       throw new Error("Files must be an array");
     }
 
-    if (files.length > MAX_FILES) {
+    if (files?.length > MAX_FILES) {
       throw new Error(`Maximum ${MAX_FILES} files allowed`);
     }
 
-    files.forEach(file => {
+    files?.forEach(file => {
       if (!file.fileName || !file.contentType) {
         throw new Error("Each file must have fileName and contentType");
       }
@@ -160,7 +160,7 @@ exports.createCl1p = async (req, res) => {
     const newCl1p = new Cl1p({
       name,
       text: text || "",
-      files: files.map(file => ({ fileName: file.fileName.toString(), contentType: file.contentType })),
+      files: files ? files.map(file => ({ fileName: file.fileName.toString(), contentType: file.contentType })) : [],
       password: hashedPassword,
       expiry: expiryDate
     });
