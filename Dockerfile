@@ -5,11 +5,14 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+# Install dependencies
 RUN npm install --silent
-RUN npm install pm2 --save
 
+# Copy the rest of the application
 COPY . .
 
+# Expose the required port
 EXPOSE 5000
 
-CMD ["pm2","start", "app.js"]
+# Use npx to run pm2 without global install
+CMD ["npx", "pm2", "start", "app.js"]
