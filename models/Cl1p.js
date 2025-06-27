@@ -5,7 +5,9 @@ const Cl1pSchema = new mongoose.Schema({
   text: { type: String },
   files: [{
     fileName : String,
-    contentType: String
+    fileKey: { type: String, required: true },
+    contentType: String,
+    size: { type: Number, required: true }
   }],
   password: { type: String, select: false },
   expiry: { type: Date, required: true },
