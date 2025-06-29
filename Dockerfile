@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 5000
 
 # Use npx to run pm2 without global install
-CMD ["npx", "nodemon", "app.js"]
+CMD ["pm2", "start", "app.js"]
