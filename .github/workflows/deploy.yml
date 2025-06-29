@@ -67,6 +67,13 @@ jobs:
               -e PORT="${{ secrets.PORT }}" \
               -e MONGO_URI="${{ secrets.MONGO_URI }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              -e NODE_ENV=production \
               -p 5000:5000 \
               --name cl1p-server \
+              --restart unless-stopped \
               ${{ secrets.DOCKER_USERNAME }}/cl1p-server:latest
+
+            echo "Checking container status..."
+            sleep 10
+            sudo docker ps -a
+            sudo docker logs cl1p-server --tail 50

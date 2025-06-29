@@ -15,5 +15,5 @@ COPY . .
 # Expose the required port
 EXPOSE 5000
 
-# Use npx to run pm2 without global install
-CMD ["pm2", "start", "app.js"]
+# Use npm start instead of pm2 for simpler container management
+CMD ["npm", "start"]
