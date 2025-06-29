@@ -3,6 +3,7 @@ const Cl1p = require("../models/Cl1p");
 const s3 = require("../config/aws");
 const bucketName = process.env.AWS_BUCKET_NAME;
 
+// i want to run every minute
 schedule.scheduleJob("0 * * * *", async () => { // Runs every hour
   const now = new Date();
   const expiredCl1ps = await Cl1p.find({ expiry: { $lte: now } });
