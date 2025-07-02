@@ -36,7 +36,7 @@ app.use(
 // Rate limiting configuration
 const globalCreateLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 200, // 200 requests per day globally
+  max: 20000, // x requests per day globally
   message: {
     status: "error",
     message: "Global create limit exceeded. Please try again tomorrow."
@@ -48,7 +48,7 @@ const globalCreateLimiter = rateLimit({
 
 const perIPCreateLimiter = rateLimit({
   windowMs: 24 * 60 * 60 * 1000, // 24 hours
-  max: 10, // 10 requests per day per IP
+  max: 100, // 10 requests per day per IP
   message: {
     status: "error", 
     message: "Too many create requests from this IP, please try again tomorrow."
